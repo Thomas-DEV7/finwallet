@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\AdminController;
+
 
 
 Route::get('/', function () {
@@ -31,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 
 
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 
 Route::get('/dashboard', function () {
@@ -54,7 +57,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-use App\Http\Controllers\AdminController;
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/admin/reversal-requests', [AdminController::class, 'index'])->name('admin.reversal.requests');
