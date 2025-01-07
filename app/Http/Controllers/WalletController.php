@@ -12,6 +12,15 @@ use Illuminate\Support\Str;
 
 class WalletController extends Controller
 {
+    public function index()
+    {
+        $allUsers = User::where('id', '!=', auth()->id())
+            ->where('role', '!=', 'admin') // Exclui administradores
+            ->get(['id', 'name', 'email']); // Seleciona apenas as colunas necessárias
+
+        return view('dashboard', compact('allUsers'));
+    }
+    
     public function deposit(Request $request)
     {
         $request->validate([
@@ -80,17 +89,12 @@ class WalletController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric|min:1',
-            'recipient_id' => 'required|exists:users,id',
+            'to_user_email' => 'required|email|exists:users,email',
         ]);
 
         $sender = auth()->user();
-        $recipient = User::findOrFail($request->input('recipient_id'));
+        $recipient = User::where('email', $request->input('to_user_email'))->firstOrFail();
         $amount = $request->input('amount');
-
-        // Validar saldo
-        if ($sender->balance < $amount) {
-            return response()->json(['error' => 'Saldo insuficiente.'], 422);
-        }
 
         // Atualizar saldos
         $sender->balance -= $amount;
@@ -103,6 +107,7 @@ class WalletController extends Controller
             'user_id' => $sender->id,
             'amount' => -$amount,
             'type' => 'transfer',
+            'recipient_id' => $recipient->id,
         ]);
 
         Transaction::create([
@@ -112,8 +117,11 @@ class WalletController extends Controller
             'related_transaction_id' => $transfer->id,
         ]);
 
-        return response()->json(['message' => 'Transferência realizada com sucesso!', 'balance' => $sender->balance]);
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Transferência realizada com sucesso! Saldo atualizado: R$ ' . number_format($sender->balance, 2, ',', '.'));
     }
+
 
     public function storeReversalRequest(Request $request)
     {

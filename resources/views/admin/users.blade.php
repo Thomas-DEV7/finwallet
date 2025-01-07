@@ -75,7 +75,7 @@
                     <button type="button" onclick="closeModal('edit-modal')"
                         class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                     <button type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition" style="background-color: rgb(53, 86, 233); margin-left:10px">
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition" style="background-color: #3556e9; margin-left:10px">
                         Salvar
                     </button>
                 </div>
