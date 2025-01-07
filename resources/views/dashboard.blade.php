@@ -71,9 +71,11 @@
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                         @if ($transaction->type === 'transfer')
                                             @if ($transaction->amount < 0)
-                                                Para: {{ $transaction->recipient->name }}
+                                                Para:
+                                                {{ $transaction->recipient ? $transaction->recipient->name : 'Usuário não encontrado' }}
                                             @else
-                                                De: {{ $transaction->sender->name }}
+                                                De:
+                                                {{ $transaction->sender ? $transaction->sender->name : 'Usuário não encontrado' }}
                                             @endif
                                         @elseif ($transaction->type === 'deposit')
                                             Depósito
@@ -81,6 +83,7 @@
                                             ---
                                         @endif
                                     </td>
+
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                         {{ $transaction->created_at->format('d/m/Y H:i') }}
                                     </td>
@@ -131,7 +134,8 @@
                             <button type="button" onclick="closeModal('transfer-modal')"
                                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                             <button type="submit"
-                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-3" style="background-color: #3556e9; ">
+                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-3"
+                                style="background-color: #3556e9; ">
                                 Transferir
                             </button>
                         </div>
@@ -158,7 +162,8 @@
                             <button type="button" onclick="closeModal('deposit-modal')"
                                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                             <button type="submit"
-                                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3" style="background-color: #3556e9; ">
+                                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3"
+                                style="background-color: #3556e9; ">
                                 Depositar
                             </button>
                         </div>
@@ -186,7 +191,8 @@
                             <button type="button" onclick="closeModal('reversal-modal')"
                                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                             <button type="submit"
-                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-3" style="background-color: #3556e9; ">
+                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-3"
+                                style="background-color: #3556e9; ">
                                 Solicitar Reversão
                             </button>
                         </div>
