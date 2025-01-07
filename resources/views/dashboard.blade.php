@@ -7,7 +7,14 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Botão de Transferir -->
+            <!-- Toast de Sucesso -->
+            @if (session('success'))
+                <div id="toast-success"
+                    class="fixed top-5 right-5 z-50 p-4 mb-4 text-green-500 bg-white border border-green-200 rounded-lg shadow-lg dark:bg-green-800 dark:text-green-200">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
 
             <!-- Saldo Atual -->
             <div
@@ -18,24 +25,22 @@
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-end mb-4">
-                        <button onclick="openTransferModal()"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                            style="background-color: #272727; ">
-
+                        <!-- Botão de Transferir -->
+                        <button onclick="openModal('transfer-modal')"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-3"
+                            style="background-color: #3a3a3a; ">
                             Transferir
                         </button>
-                        <button onclick="openTransferModal()"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-3"
+                        <!-- Botão de Depositar -->
+                        <button onclick="openModal('deposit-modal')"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3"
                             style="background-color: #3556e9; ">
-
                             Depositar
                         </button>
                     </div>
                 </div>
             </div>
             <br>
-
-
 
             <!-- Últimas Transações -->
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -48,6 +53,7 @@
                                 <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Valor</th>
                                 <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Origem/Destino</th>
                                 <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Data</th>
+                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,13 +84,18 @@
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                         {{ $transaction->created_at->format('d/m/Y H:i') }}
                                     </td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                        <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
+                                            class="text-red-500 hover:text-red-600 ml-2">
+                                            <i class="fas fa-warning" style="color: #d3d303"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-
 
             <!-- Modal de Transferência -->
             <div id="transfer-modal"
@@ -110,8 +121,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                                Valor (máximo permitido: R$
-                                {{ number_format(auth()->user()->balance, 2, ',', '.') }}):
+                                Valor:
                             </label>
                             <input type="number" id="amount" name="amount" step="0.01"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
@@ -121,22 +131,89 @@
                             <button type="button" onclick="closeModal('transfer-modal')"
                                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                             <button type="submit"
-                                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3"
-                                style="background-color: #3556e9; ">Transferir</button>
+                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-3" style="background-color: #3556e9; ">
+                                Transferir
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <!-- Modal de Depósito -->
+            <div id="deposit-modal"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4">Depositar Saldo</h2>
+                    <form id="deposit-form" method="POST" action="{{ route('wallet.deposit') }}">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Valor:
+                            </label>
+                            <input type="number" id="deposit-amount" name="amount" step="0.01"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+                                required>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" onclick="closeModal('deposit-modal')"
+                                class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
+                            <button type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3" style="background-color: #3556e9; ">
+                                Depositar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal de Reversão -->
+            <div id="reversal-modal"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4">Solicitar Reversão</h2>
+                    <form id="reversal-form" method="POST" action="{{ route('transactions.reversal.request') }}">
+                        @csrf
+                        <input type="hidden" id="transaction_id" name="transaction_id">
+                        <div class="mb-4">
+                            <label for="comment" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                                Comentário:
+                            </label>
+                            <textarea id="comment" name="comment" rows="3"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+                                required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" onclick="closeModal('reversal-modal')"
+                                class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
+                            <button type="submit"
+                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 ml-3" style="background-color: #3556e9; ">
+                                Solicitar Reversão
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        function openTransferModal() {
-            document.getElementById('transfer-modal').classList.remove('hidden');
+        function openModal(modalId, transactionId = null) {
+            if (transactionId) {
+                document.getElementById('transaction_id').value = transactionId;
+            }
+            document.getElementById(modalId).classList.remove('hidden');
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
         }
+
+        setTimeout(() => {
+            const toast = document.getElementById('toast-success');
+            if (toast) {
+                toast.remove();
+            }
+        }, 3000);
     </script>
 </x-app-layout>

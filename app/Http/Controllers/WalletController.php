@@ -20,29 +20,32 @@ class WalletController extends Controller
 
         return view('dashboard', compact('allUsers'));
     }
-    
+
     public function deposit(Request $request)
     {
         $request->validate([
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $user = Auth::user();
+        $user = auth()->user();
         $amount = $request->input('amount');
 
-        // Atualizar saldo
+        // Atualizar saldo do usuário
         $user->balance += $amount;
         $user->save();
 
-        // Registrar transação
+        // Registrar transação de depósito
         Transaction::create([
             'user_id' => $user->id,
             'amount' => $amount,
             'type' => 'deposit',
         ]);
 
-        return response()->json(['message' => 'Depósito realizado com sucesso!', 'balance' => $user->balance]);
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Pagamento efetuado com sucesso! Valor de R$ ' . number_format($amount, 2, ',', '.') . ' adicionado à carteira.');
     }
+
 
     public function transferSubmit(Request $request)
     {

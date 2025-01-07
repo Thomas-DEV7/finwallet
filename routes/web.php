@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
 
 
+Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
