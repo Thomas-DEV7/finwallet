@@ -53,16 +53,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/wallet/reverse', [WalletController::class, 'reverse']);
 
     Route::post('/transactions/reversal-request', [WalletController::class, 'storeReversalRequest'])
-    ->name('transactions.reversal.request');
+        ->name('transactions.reversal.request');
 });
 
 
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('/admin/reversal-requests', [AdminController::class, 'index'])->name('admin.reversal.requests');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+
+
+    Route::put('/users/update', [AdminController::class, 'update'])->name('admin.users.update'); // Atualizar usuário
+    Route::delete('/users/delete', [AdminController::class, 'delete'])->name('admin.users.delete'); // Excluir usuário
+
+    Route::get('/admin/reversal-requests', [AdminController::class, 'reversalRequests'])->name('admin.reversal.requests');
     Route::post('/admin/reversal-requests/{uuid}/approve', [AdminController::class, 'approve'])->name('admin.reversal.requests.approve');
     Route::post('/admin/reversal-requests/{uuid}/reject', [AdminController::class, 'reject'])->name('admin.reversal.requests.reject');
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
