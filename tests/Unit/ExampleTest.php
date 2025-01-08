@@ -2,15 +2,18 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\User;
 
-class ExampleTest extends TestCase
+class UserTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_that_true_is_true(): void
+    /** @test */
+    public function it_creates_a_user()
     {
-        $this->assertTrue(true);
+        $user = User::factory()->create();
+
+        $this->assertDatabaseHas('users', [
+            'email' => $user->email,
+        ]);
     }
 }
