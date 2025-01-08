@@ -1,66 +1,210 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **FinWallet - Digital Wallet Application**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## **Overview**
+FinWallet is a secure, efficient, and user-friendly digital wallet application. Designed for modern financial management, it supports functionalities like balance management, secure transactions, deposit handling, and detailed reversal request workflows. This application is ideal for both end-users and administrators, providing a seamless experience with robust backend capabilities.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Features**
+- **User Features:**
+  - View current balance.
+  - Perform secure deposits and transfers.
+  - View transaction history with detailed information.
+  - Request transaction reversals.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Admin Features:**
+  - Admin dashboard with metrics:
+    - Total users.
+    - Total transactions.
+    - Pending reversal requests.
+  - Manage users:
+    - Edit user information.
+    - Delete user accounts.
+  - Handle reversal requests:
+    - Approve or reject with real-time updates.
+  - View and analyze detailed transaction logs.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## **Tech Stack**
+- **Backend:** Laravel 11 (PHP 8.2)
+- **Frontend:** Tailwind CSS, Blade Templates
+- **Database:** MySQL
+- **Authentication:** Laravel Breeze
+- **Containerization:** Docker
+- **Version Control:** Git
+- **Observability:** Logging and request monitoring with Laravel Telescope (optional)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## **System Requirements**
+- **PHP:** >= 8.2
+- **Laravel:** 11
+- **Composer:** >= 2.0
+- **Node.js:** >= 18.x with npm or Yarn
+- **Database:** MySQL 8.0 or compatible
+- **Optional:** Docker with Docker Compose
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## **Installation**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Prerequisites**
+1. Ensure PHP, Composer, and Node.js are installed.
+2. Set up a MySQL database for the project.
 
-### Premium Partners
+### **Steps**
+1. Clone the repository:
+   ```bash
+   https://github.com/Thomas-DEV7/finwallet
+   cd finwallet
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
 
-## Contributing
+3. Install Node.js dependencies:
+   ```bash
+   npm install
+   npm run build
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Set up the environment:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Code of Conduct
+5. Configure the `.env` file with:
+   - **Database credentials**
+   - **Mail settings** (for password recovery emails)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. Run database migrations and seeders:
+   ```bash
+   php artisan migrate --seed
+   ```
 
-## Security Vulnerabilities
+7. Start the development server:
+   ```bash
+   php artisan serve
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8. Access the application at:
+   ```
+   http://localhost:8000
+   ```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## **Folder Structure**
+```
+- app/
+  - Http/
+    - Controllers/        # Application controllers
+    - Middleware/         # Custom middlewares
+  - Models/               # Eloquent models
+- database/
+  - migrations/           # Database migrations
+  - seeders/              # Database seeders
+- resources/
+  - views/                # Blade templates
+  - css/                  # Custom styles
+  - js/                   # JavaScript files
+- routes/
+  - web.php               # Web routes
+- public/
+  - images/               # Static assets (e.g., logo)
+```
+
+---
+
+## **Key Models**
+### **User**
+Represents users in the application.
+- **Attributes:** `uuid`, `name`, `email`, `password`, `role`, `balance`.
+
+### **Transaction**
+Tracks all user transactions.
+- **Attributes:** `uuid`, `user_id`, `sender_id`, `recipient_id`, `amount`, `type`, `related_transaction_id`.
+
+### **ReversalRequest**
+Handles requests for transaction reversals.
+- **Attributes:** `uuid`, `user_uuid`, `transaction_uuid`, `comment`, `status`.
+
+---
+
+## **Core Routes**
+### **User Routes**
+| Method | Endpoint                  | Action                        |
+|--------|---------------------------|-------------------------------|
+| GET    | /dashboard                | Show user dashboard           |
+| POST   | /wallet/deposit           | Handle deposit transactions   |
+| POST   | /wallet/transfer          | Handle balance transfers      |
+| POST   | /transactions/reversal-request | Submit reversal request |
+
+### **Admin Routes**
+| Method | Endpoint                          | Action                        |
+|--------|-----------------------------------|-------------------------------|
+| GET    | /admin/dashboard                  | Admin dashboard overview      |
+| GET    | /admin/users                      | Manage users                  |
+| POST   | /admin/reversal-requests/{uuid}/approve | Approve reversal request   |
+| POST   | /admin/reversal-requests/{uuid}/reject  | Reject reversal request    |
+
+---
+
+## **Admin Dashboard**
+Displays key metrics:
+- Total users.
+- Total transactions.
+- Pending reversal requests.
+- Logs of recent transactions (latest 10).
+
+---
+
+## **Development Notes**
+
+### **Transactions**
+- Transaction types include:
+  - `deposit`: Adding funds to a user's account.
+  - `transfer`: Moving funds between users.
+  - `refund`: Reversal of a previous transaction.
+
+### **Reversal Requests**
+- Prevent duplicate requests for the same transaction.
+- Admins can approve or reject requests.
+
+### **Database Seeders**
+- Creates initial users and transaction records for testing:
+  - **Users:** Includes admin and multiple regular users.
+  - **Transactions:** Various types to simulate real-world data.
+
+---
+
+<!-- ## **Screenshots**
+### **User Dashboard**
+![User Dashboard](path-to-user-dashboard.png)
+
+### **Admin Dashboard**
+![Admin Dashboard](path-to-admin-dashboard.png)
+
+--- -->
+<!-- 
+## **Contributing**
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit and push your changes:
+   ```bash
+   git commit -m "Add feature"
+   git push origin feature-name
+   ```
+4. Submit a pull request.
+
+--- -->
+<!-- 
+## **License**
+This project is licensed under the MIT License. -->
