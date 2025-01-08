@@ -95,9 +95,14 @@ class WalletController extends Controller
             'to_user_email' => 'required|email|exists:users,email',
         ]);
 
-        $sender = auth()->user();
+        $sender = auth()->user(); // Corrige a chamada para auth()->user()
         $recipient = User::where('email', $request->input('to_user_email'))->firstOrFail();
         $amount = $request->input('amount');
+
+        // Verifica se o saldo é suficiente
+        if ($sender->balance < $amount) {
+            return redirect()->back()->withErrors(['amount' => 'Saldo insuficiente para realizar a transferência.']);
+        }
 
         // Atualizar saldos
         $sender->balance -= $amount;
@@ -108,13 +113,16 @@ class WalletController extends Controller
         // Registrar transações
         $transfer = Transaction::create([
             'user_id' => $sender->id,
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
             'amount' => -$amount,
             'type' => 'transfer',
-            'recipient_id' => $recipient->id,
         ]);
 
         Transaction::create([
             'user_id' => $recipient->id,
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
             'amount' => $amount,
             'type' => 'transfer',
             'related_transaction_id' => $transfer->id,
@@ -124,6 +132,7 @@ class WalletController extends Controller
             ->route('dashboard')
             ->with('success', 'Transferência realizada com sucesso! Saldo atualizado: R$ ' . number_format($sender->balance, 2, ',', '.'));
     }
+
 
 
     public function storeReversalRequest(Request $request)

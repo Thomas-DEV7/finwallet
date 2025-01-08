@@ -1,9 +1,31 @@
 <x-app-layout>
     <style>
-        .c-box{
+        .c-box {
             margin: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            /* Adiciona sombra */
+            border-radius: 0.75rem;
+            /* Bordas arredondadas */
+            overflow: hidden;
+            /* Para garantir que o conteúdo não ultrapasse os limites */
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 640px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th,
+            td {
+                min-width: 100px;
+                text-align: left;
+            }
         }
     </style>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
@@ -15,7 +37,7 @@
             <!-- Toast de Sucesso -->
             @if (session('success'))
                 <div id="toast-success"
-                    class="fixed top-5 right-5 z-50 p-4 mb-4 text-green-500 bg-white border border-green-200 rounded-lg shadow-lg dark:bg-green-800 dark:text-green-200">
+                    class=" top-5 right-5 z-50 p-4 mb-4 text-green-500 bg-white border border-green-200 rounded-lg shadow-lg dark:bg-green-800 dark:text-green-200">
                     <i class="fas fa-check-circle mr-2"></i>
                     <span>{{ session('success') }}</span>
                 </div>
@@ -25,25 +47,27 @@
             <div
                 class="c-box mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex justify-between items-center">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-semibold">Seu saldo atual</h3>
+                    <h3 class="text-lg font-semibold">Saldo</h3>
                     <p class="text-2xl font-bold mt-2">R$ {{ number_format(auth()->user()->balance, 2, ',', '.') }}</p>
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="flex justify-end mb-4">
+                    <div class="flex flex-col items-center space-y-4 mb-4">
+                        <!-- Alterado para flex-col e adicionado espaço entre os botões -->
                         <!-- Botão de Transferir -->
                         <button onclick="openModal('transfer-modal')"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-3"
-                            style="background-color: #3a3a3a; ">
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 m-3"
+                            style="background-color: #3a3a3a;">
                             Transferir
                         </button>
                         <!-- Botão de Depositar -->
                         <button onclick="openModal('deposit-modal')"
-                            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 ml-3"
-                            style="background-color: #3556e9; ">
+                            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 mt-1"
+                            style="background-color: #3556e9;">
                             Depositar
                         </button>
                     </div>
                 </div>
+
             </div>
             <br>
 
@@ -51,57 +75,63 @@
             <div class="c-box mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-semibold">Últimas Transações</h3>
-                    <table class="table-auto w-full mt-4 border-collapse border border-gray-200 dark:border-gray-700">
-                        <thead>
-                            <tr class="bg-gray-100 dark:bg-gray-700">
-                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Tipo</th>
-                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Valor</th>
-                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Origem/Destino</th>
-                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Data</th>
-                                <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (auth()->user()->transactions->sortByDesc('created_at')->take(5) as $transaction)
-                                <tr class="text-center {{ $transaction->amount < 0 ? 'bg-red-100' : 'bg-green-100' }}">
-                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        {{ ucfirst($transaction->type) }}
-                                    </td>
-                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        <span
-                                            class="{{ $transaction->amount < 0 ? 'text-black' : 'text-green-600 dark:text-green-400' }}">
-                                            R$ {{ number_format(abs($transaction->amount), 2, ',', '.') }}
-                                        </span>
-                                    </td>
-                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        @if ($transaction->type === 'transfer')
-                                            @if ($transaction->amount < 0)
-                                                Para:
-                                                {{ $transaction->recipient ? $transaction->recipient->name : 'Usuário não encontrado' }}
-                                            @else
-                                                De:
-                                                {{ $transaction->sender ? $transaction->sender->name : 'Usuário não encontrado' }}
-                                            @endif
-                                        @elseif ($transaction->type === 'deposit')
-                                            Depósito
-                                        @else
-                                            ---
-                                        @endif
-                                    </td>
-
-                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        {{ $transaction->created_at->format('d/m/Y H:i') }}
-                                    </td>
-                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
-                                            class="text-red-500 hover:text-red-600 ml-2">
-                                            <i class="fas fa-warning" style="color: #d3d303"></i>
-                                        </button>
-                                    </td>
+                    <div class="overflow-x-auto">
+                        <table
+                            class="table-auto w-full mt-4 border-collapse border border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Tipo</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Valor</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Origem/Destino
+                                    </th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Data</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Ações</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (auth()->user()->transactions->sortByDesc('created_at')->take(5) as $transaction)
+                                {{-- <pre>{{ json_encode($transaction, JSON_PRETTY_PRINT) }}</pre> --}}
+
+                                    <tr
+                                        class="text-center {{ $transaction->amount < 0 ? 'bg-red-100' : 'bg-green-100' }}">
+                                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                            {{ ucfirst($transaction->type) }}
+                                        </td>
+                                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                            <span
+                                                class="{{ $transaction->amount < 0 ? 'text-black' : 'text-green-600 dark:text-green-400' }}">
+                                                R$ {{ number_format(abs($transaction->amount), 2, ',', '.') }}
+                                            </span>
+                                        </td>
+                                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                            @if ($transaction->type === 'transfer')
+                                                @if ($transaction->amount < 0)
+                                                    Para:
+                                                    {{ $transaction->recipient ? $transaction->recipient->name : 'Usuário não encontrado' }}
+                                                @else
+                                                    De:
+                                                    {{ $transaction->sender ? $transaction->sender->name : 'Usuário não encontrado' }}
+                                                @endif
+                                            @elseif ($transaction->type === 'deposit')
+                                                Depósito
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                            {{ $transaction->created_at->format('d/m/Y H:i') }}
+                                        </td>
+                                        <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                            <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
+                                                class="text-red-500 hover:text-red-600 ml-2">
+                                                <i class="fas fa-warning" style="color: #d3d303"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -204,7 +234,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 

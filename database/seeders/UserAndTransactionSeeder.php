@@ -12,7 +12,7 @@ class UserAndTransactionSeeder extends Seeder
 {
     public function run()
     {
-        // Criar 4 usuários
+        // Criar usuários com saldo inicial
         $users = [
             User::create([
                 'uuid' => (string) Str::uuid(),
@@ -28,7 +28,7 @@ class UserAndTransactionSeeder extends Seeder
                 'email' => 'carlos@exemplo.com',
                 'password' => Hash::make('secret'),
                 'role' => 'user',
-                'balance' => 800.00, // Saldo inicial aumentado para mais transações
+                'balance' => 800.00, // Saldo inicial
             ]),
             User::create([
                 'uuid' => (string) Str::uuid(),
@@ -48,13 +48,25 @@ class UserAndTransactionSeeder extends Seeder
             ]),
         ];
 
-        // Transações realizadas por Carlos Silva
+        // Criar transações de depósito inicial para refletir o saldo inicial
+        foreach ($users as $user) {
+            Transaction::create([
+                'uuid' => (string) Str::uuid(),
+                'user_id' => $user->id,
+                'sender_id' => null,
+                'recipient_id' => $user->id,
+                'amount' => $user->balance,
+                'type' => 'deposit',
+            ]);
+        }
+
+        // Adicionar transações personalizadas
         Transaction::create([
             'uuid' => (string) Str::uuid(),
             'user_id' => $users[1]->id, // Carlos Silva
             'sender_id' => $users[1]->id,
             'recipient_id' => $users[2]->id, // Para Maria Oliveira
-            'amount' => -100.00, // Saída
+            'amount' => -100.00,
             'type' => 'transfer',
         ]);
 
@@ -63,57 +75,10 @@ class UserAndTransactionSeeder extends Seeder
             'user_id' => $users[2]->id, // Maria Oliveira
             'sender_id' => $users[1]->id, // Carlos Silva
             'recipient_id' => $users[2]->id,
-            'amount' => 100.00, // Entrada
+            'amount' => 100.00,
             'type' => 'transfer',
         ]);
 
-        Transaction::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => $users[1]->id, // Carlos Silva
-            'sender_id' => $users[1]->id,
-            'recipient_id' => $users[3]->id, // Para Ana Santos
-            'amount' => -50.00, // Saída
-            'type' => 'transfer',
-        ]);
-
-        Transaction::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => $users[3]->id, // Ana Santos
-            'sender_id' => $users[1]->id, // Carlos Silva
-            'recipient_id' => $users[3]->id,
-            'amount' => 50.00, // Entrada
-            'type' => 'transfer',
-        ]);
-
-        Transaction::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => $users[1]->id, // Carlos Silva faz um depósito
-            'sender_id' => null,
-            'recipient_id' => $users[1]->id,
-            'amount' => 200.00, // Depósito
-            'type' => 'deposit',
-        ]);
-
-        // Outras transações para variabilidade
-        Transaction::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => $users[1]->id, // Carlos Silva
-            'sender_id' => $users[1]->id,
-            'recipient_id' => $users[0]->id, // Para Admin João
-            'amount' => -150.00, // Saída
-            'type' => 'transfer',
-        ]);
-
-        Transaction::create([
-            'uuid' => (string) Str::uuid(),
-            'user_id' => $users[0]->id, // Admin João
-            'sender_id' => $users[1]->id, // Carlos Silva
-            'recipient_id' => $users[0]->id,
-            'amount' => 150.00, // Entrada
-            'type' => 'transfer',
-        ]);
-
-        // Transação de Ana Santos para Maria Oliveira
         Transaction::create([
             'uuid' => (string) Str::uuid(),
             'user_id' => $users[3]->id, // Ana Santos envia
