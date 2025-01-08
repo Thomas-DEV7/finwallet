@@ -37,7 +37,7 @@
             <!-- Toast de Sucesso -->
             @if (session('success'))
                 <div id="toast-success"
-                    class=" top-5 right-5 z-50 p-4 mb-4 text-green-500 bg-white border border-green-200 rounded-lg shadow-lg dark:bg-green-800 dark:text-green-200">
+                    class="  z-50 p-4 mb-4 text-green-500 bg-white border border-green-200 rounded-lg shadow-lg dark:bg-green-800 dark:text-green-200">
                     <i class="fas fa-check-circle mr-2"></i>
                     <span>{{ session('success') }}</span>
                 </div>
@@ -90,7 +90,7 @@
                             </thead>
                             <tbody>
                                 @foreach (auth()->user()->transactions->sortByDesc('created_at')->take(5) as $transaction)
-                                {{-- <pre>{{ json_encode($transaction, JSON_PRETTY_PRINT) }}</pre> --}}
+                                    {{-- <pre>{{ json_encode($transaction, JSON_PRETTY_PRINT) }}</pre> --}}
 
                                     <tr
                                         class="text-center {{ $transaction->amount < 0 ? 'bg-red-100' : 'bg-green-100' }}">

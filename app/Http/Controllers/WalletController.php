@@ -140,16 +140,17 @@ class WalletController extends Controller
         // Validar os dados recebidos
         $request->validate([
             'transaction_id' => 'required|exists:transactions,id',
-            'user_id' => 'required|exists:users,uuid',
+            // 'user_id' => 'required|exists:users,uuid',
             'comment' => 'required|string|max:500',
         ]);
 
         $transaction = Transaction::findOrFail($request->transaction_id);
 
         // Salvar a solicitação de reversão na tabela `reversal_requests`
+
         DB::table('reversal_requests')->insert([
             'uuid' => (string) Str::uuid(),
-            'user_uuid' => $request->user_id,
+            'user_uuid' => auth()->user()->uuid,
             'transaction_uuid' => $transaction->uuid,
             'comment' => $request->comment,
             'status' => 'pending',
