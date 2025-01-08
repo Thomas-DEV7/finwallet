@@ -64,7 +64,7 @@
                                 <tr
                                     class="text-center bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        {{ $request->user_name }}
+                                        {{ $request->user->name }}
                                     </td>
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                         <small>{{ $request->transaction_uuid }}</small>
