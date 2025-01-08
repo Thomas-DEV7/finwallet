@@ -85,7 +85,7 @@
                                         <small>{{ \Illuminate\Support\Carbon::parse($request->created_at)->format('d/m/Y H:i') }}</small>
                                     </td>
                                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                        <small>{{ \Illuminate\Support\Carbon::parse($request->updated_at)->format('d/m/Y H:i') }}</small>
+                                        <small>{{$request->created_at == $request->updated_at ? '- - -' : \Illuminate\Support\Carbon::parse($request->updated_at)->format('d/m/Y H:i') }}</small>
                                     </td>
 
 
