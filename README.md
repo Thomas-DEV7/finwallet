@@ -97,7 +97,42 @@ FinWallet is a secure, efficient, and user-friendly digital wallet application. 
    ```
 
 ---
+## **Docker Setup**
 
+### **Steps**
+1. Build and start the Docker containers:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+2. Install dependencies:
+   ```bash
+   docker exec -it finwallet-app composer install
+   docker exec -it finwallet-app npm install
+   docker exec -it finwallet-app npm run build
+   ```
+
+3. Set up the environment and application key:
+   ```bash
+   docker exec -it finwallet-app cp .env.example .env
+   docker exec -it finwallet-app php artisan key:generate
+   ```
+
+4. Run database migrations and seeders:
+   ```bash
+   docker exec -it finwallet-app php artisan migrate --seed
+   ```
+
+5. Start Laravel's development server:
+   ```bash
+   docker exec -it finwallet-app php artisan serve --host=0.0.0.0 --port=8000
+   ```
+
+6. Access the application at:
+   ```
+   http://localhost:8000
+   ```
+---
 ## **Folder Structure**
 ```
 - app/
