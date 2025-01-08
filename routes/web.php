@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
-    Route::post('/wallet/transfer', [WalletController::class, 'transfer']);
+    Route::post('/wallet/transfer', [WalletController::class, 'transfer'])->name('wallet.transfer');
     Route::post('/wallet/reverse', [WalletController::class, 'reverse']);
     Route::post('/transactions/reversal-request', [WalletController::class, 'storeReversalRequest'])
         ->name('transactions.reversal.request');
