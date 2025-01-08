@@ -145,7 +145,7 @@ class AdminController extends Controller
         // Dados para o dashboard
         $totalUsers = User::count();
         $totalTransactions = Transaction::count();
-        $pendingReversalRequests = DB::table('reversal_requests')->where('status', 'pending')->count();
+        $pendingReversalRequests = ReversalRequest::where('status', 'pending')->count();
         $recentTransactions = Transaction::join('users', 'transactions.user_id', '=', 'users.id')
             ->select('transactions.*', 'users.name as user_name')
             ->latest()
