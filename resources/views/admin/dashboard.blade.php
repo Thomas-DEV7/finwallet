@@ -1,4 +1,21 @@
 <x-app-layout>
+    <style>
+        @media (max-width: 640px) {
+            table, .responsiv {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                margin: 5px
+            }
+            
+
+            th,
+            td {
+                min-width: 100px;
+                text-align: left;
+            }
+        }
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
@@ -9,7 +26,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <!-- Visão Geral -->
-            <div class="flex flex-wrap justify-between gap-4">
+            <div class="responsiv flex flex-wrap justify-between gap-4">
                 <!-- Total de Usuários -->
                 <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Total de Usuários</h3>

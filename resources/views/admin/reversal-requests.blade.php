@@ -1,4 +1,19 @@
 <x-app-layout>
+    <style>
+        @media (max-width: 640px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th,
+            td {
+                min-width: 100px;
+                text-align: left;
+            }
+        }
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Solicitações de Reversão') }}

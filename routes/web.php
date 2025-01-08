@@ -10,7 +10,7 @@ use App\Models\User;
 Route::get('/', function () {
     return view('welcome');
 });
-# Screens functionals
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -31,10 +31,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
-
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
 Route::get('/dashboard', [WalletController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -47,23 +44,18 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::post('/wallet/deposit', [WalletController::class, 'deposit']);
+    Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
     Route::post('/wallet/transfer', [WalletController::class, 'transfer']);
     Route::post('/wallet/reverse', [WalletController::class, 'reverse']);
-
     Route::post('/transactions/reversal-request', [WalletController::class, 'storeReversalRequest'])
         ->name('transactions.reversal.request');
 });
 
 
-
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-
-
     Route::put('/users/update', [AdminController::class, 'update'])->name('admin.users.update'); // Atualizar usuário
     Route::delete('/users/delete', [AdminController::class, 'delete'])->name('admin.users.delete'); // Excluir usuário
-
     Route::get('/admin/reversal-requests', [AdminController::class, 'reversalRequests'])->name('admin.reversal.requests');
     Route::post('/admin/reversal-requests/{uuid}/approve', [AdminController::class, 'approve'])->name('admin.reversal.requests.approve');
     Route::post('/admin/reversal-requests/{uuid}/reject', [AdminController::class, 'reject'])->name('admin.reversal.requests.reject');

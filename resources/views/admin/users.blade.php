@@ -1,4 +1,20 @@
 <x-app-layout>
+    <style>
+        @media (max-width: 640px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th,
+            td {
+                min-width: 100px;
+                text-align: left;
+            }
+        }
+    </style>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Usuários') }}
@@ -75,7 +91,8 @@
                     <button type="button" onclick="closeModal('edit-modal')"
                         class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                     <button type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition" style="background-color: #3556e9; margin-left:10px">
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition"
+                        style="background-color: #3556e9; margin-left:10px">
                         Salvar
                     </button>
                 </div>
@@ -96,7 +113,8 @@
                     <button type="button" onclick="closeModal('delete-modal')"
                         class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Cancelar</button>
                     <button type="submit"
-                        class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 transition" style="background-color: rgb(161, 26, 26); margin-left:10px">
+                        class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 transition"
+                        style="background-color: rgb(161, 26, 26); margin-left:10px">
 
                         Excluir
                     </button>
