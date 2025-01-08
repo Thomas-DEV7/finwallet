@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReversalRequest;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -148,14 +149,12 @@ class WalletController extends Controller
 
         // Salvar a solicitação de reversão na tabela `reversal_requests`
 
-        DB::table('reversal_requests')->insert([
+        ReversalRequest::create([
             'uuid' => (string) Str::uuid(),
             'user_uuid' => auth()->user()->uuid,
             'transaction_uuid' => $transaction->uuid,
             'comment' => $request->comment,
             'status' => 'pending',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         return redirect()->back()->with('success', 'Solicitação de reversão enviada com sucesso.');

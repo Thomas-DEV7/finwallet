@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReversalRequest;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class AdminController extends Controller
 {
@@ -71,48 +74,72 @@ class AdminController extends Controller
 
     public function approve($uuid)
     {
-        // Buscar a solicitação de reversão
-        $reversalRequest = DB::table('reversal_requests')->where('uuid', $uuid)->first();
+        // Buscar a solicitação de reversão usando o modelo
+        $reversalRequest = ReversalRequest::where('uuid', $uuid)->first();
 
         if (!$reversalRequest) {
             return redirect()->back()->with('error', 'Solicitação não encontrada.');
         }
 
-        // Buscar a transação associada
-        $transaction = DB::table('transactions')->where('uuid', $reversalRequest->transaction_uuid)->first();
+        // Buscar a transação associada usando o relacionamento
+        $transaction = $reversalRequest->transaction;
 
         if (!$transaction) {
             return redirect()->back()->with('error', 'Transação não encontrada.');
         }
 
-        // Atualizar status da solicitação para "approved"
-        DB::table('reversal_requests')->where('uuid', $uuid)->update(['status' => 'approved', 'updated_at' => now()]);
+        // Atualizar o status da solicitação para "approved"
+        $reversalRequest->update(['status' => 'approved', 'updated_at' => now()]);
 
         // Buscar o usuário associado à transação
-        $user = DB::table('users')->where('id', $transaction->user_id)->first();
+        $user = User::find($transaction->user_id);
 
         if (!$user) {
             return redirect()->back()->with('error', 'Usuário associado à transação não encontrado.');
         }
 
         // Reverter o valor para o saldo do usuário
-        $newBalance = $user->balance + abs($transaction->amount);
-        DB::table('users')->where('id', $user->id)->update(['balance' => $newBalance]);
+        $user->balance += abs($transaction->amount);
+        $user->save(); // Persistir a alteração no banco
 
-        // Retornar mensagem de sucesso com o valor da transação
-        return redirect()->back()->with(
-            'success',
-            'Solicitação aprovada. O valor de R$ ' . number_format(abs($transaction->amount), 2, ',', '.') . ' foi revertido para a conta do usuário.'
-        );
+        // Verificar se o saldo foi atualizado
+        if ($user->wasChanged('balance')) {
+            // Registrar a transação de estorno
+            Transaction::create([
+                'uuid' => (string) Str::uuid(),
+                'user_id' => $user->id, // Associar a transação ao usuário
+                'sender_id' => null, // O estorno não tem um remetente definido
+                'recipient_id' => $user->id, // O valor é devolvido ao usuário
+                'amount' => abs($transaction->amount), // Valor positivo para representar a entrada
+                'type' => 'refund', // Tipo de transação "refund" para identificar o estorno
+                'related_transaction_id' => $transaction->id, // Relaciona com a transação original
+            ]);
+
+            return redirect()->back()->with(
+                'success',
+                'Solicitação aprovada. O valor de R$ ' . number_format(abs($transaction->amount), 2, ',', '.') . ' foi revertido para a conta do usuário.'
+            );
+        } else {
+            return redirect()->back()->with('error', 'Não foi possível atualizar o saldo do usuário.');
+        }
     }
+
 
     public function reject($uuid)
     {
+        // Buscar a solicitação de reversão usando o modelo
+        $reversalRequest = ReversalRequest::where('uuid', $uuid)->first();
+
+        if (!$reversalRequest) {
+            return redirect()->back()->with('error', 'Solicitação não encontrada.');
+        }
+
         // Atualizar status para "rejected"
-        DB::table('reversal_requests')->where('uuid', $uuid)->update(['status' => 'rejected']);
+        $reversalRequest->update(['status' => 'rejected', 'updated_at' => now()]);
 
         return redirect()->back()->with('success', 'Solicitação rejeitada.');
     }
+
     public function dashboard()
     {
         // Dados para o dashboard
