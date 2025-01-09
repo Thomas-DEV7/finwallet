@@ -16,12 +16,23 @@ class WalletController extends Controller
 {
     public function index()
     {
-        $allUsers = User::where('id', '!=', auth()->id())
-            ->where('role', '!=', 'admin') // Exclui administradores
-            ->get(['id', 'name', 'email']); // Seleciona apenas as colunas necessárias
+        try {
+            $allUsers = User::where('id', '!=', auth()->id())
+                ->where('role', '!=', 'admin')
+                ->get(['id', 'name', 'email']);
 
-        return view('dashboard', compact('allUsers'));
+            return view('dashboard', compact('allUsers'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching users for dashboard', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
+
+            // Retornar uma mensagem amigável ao usuário
+            return redirect()->route('dashboard')->with('error', 'Ocorreu um erro ao carregar os dados do painel. Tente novamente mais tarde.');
+        }
     }
+
 
     public function deposit(Request $request)
     {
