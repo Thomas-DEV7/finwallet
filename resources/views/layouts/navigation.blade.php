@@ -5,9 +5,16 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 80px">
-                    </a>
+                    @if (auth()->user() && auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 80px">
+                        </a>
+                    @endif
+                    @if (auth()->user() && auth()->user()->role === 'user')
+                        <a href="{{ route('dashboard') }}">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 80px">
+                        </a>
+                    @endif
                 </div>
 
                 <!-- Navigation Links -->
