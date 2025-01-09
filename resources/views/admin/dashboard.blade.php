@@ -7,12 +7,21 @@
                 white-space: nowrap;
                 margin: 5px
             }
-            
+            .responsiv{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
 
             th,
             td {
                 min-width: 100px;
                 text-align: left;
+            }
+            .responsiv-item{
+                width: 90%;
+                margin:0px
             }
         }
     </style>
@@ -28,19 +37,19 @@
             <!-- Visão Geral -->
             <div class="responsiv flex flex-wrap justify-between gap-4">
                 <!-- Total de Usuários -->
-                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
+                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center responsiv-item">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Total de Usuários</h3>
                     <p class="text-4xl font-bold text-gray-800 dark:text-gray-100 mt-2">{{ $totalUsers }}</p>
                 </div>
 
                 <!-- Total de Transações -->
-                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
+                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center responsiv-item">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Total de Transações</h3>
                     <p class="text-4xl font-bold text-gray-800 dark:text-gray-100 mt-2">{{ $totalTransactions }}</p>
                 </div>
 
                 <!-- Solicitações Pendentes -->
-                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
+                <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center responsiv-item">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Solicitações Pendentes</h3>
                     <p class="text-4xl font-bold text-gray-800 dark:text-gray-100 mt-2">{{ $pendingReversalRequests }}
                     </p>
