@@ -12,8 +12,19 @@
         <link href="https://fonts.bunny.net/css?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script defer>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            customBlue: '#1e40af',
+                            customGreen: '#16a34a',
+                        },
+                    },
+                },
+            }
+        </script>
         <!-- Custom Styles -->
         <style>
             body {

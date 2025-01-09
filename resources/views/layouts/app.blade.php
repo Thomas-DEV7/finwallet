@@ -14,8 +14,19 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script defer>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            customBlue: '#1e40af',
+                            customGreen: '#16a34a',
+                        },
+                    },
+                },
+            }
+        </script>    </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             

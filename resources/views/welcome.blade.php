@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to FinWallet</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBlue: '#1e40af',
+                        customGreen: '#16a34a',
+                    },
+                },
+            },
+        }
+    </script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -15,6 +29,7 @@
             background-color: #121212;
             color: #E5E5E5;
         }
+
         .hero {
             background: linear-gradient(135deg, #1E293B, #0F172A);
             color: #FFFFFF;
@@ -24,21 +39,25 @@
             border-bottom-right-radius: 2rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
+
         .hero img {
             width: 120px;
             margin: 0 auto 1.5rem auto;
             display: block;
         }
+
         .hero h1 {
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1rem;
         }
+
         .hero p {
             font-size: 1.25rem;
             color: #A3A3A3;
             margin-top: 0.5rem;
         }
+
         .features {
             display: flex;
             flex-wrap: wrap;
@@ -46,6 +65,7 @@
             gap: 2rem;
             padding: 3rem 2rem;
         }
+
         .feature-card {
             background: #1E1E1E;
             border-radius: 1rem;
@@ -56,28 +76,34 @@
             max-width: 300px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
         }
+
         .feature-card img {
             width: 60px;
             margin: 0 auto 1rem auto;
             display: block;
         }
+
         .feature-card h3 {
             font-size: 1.5rem;
             color: #3B82F6;
             margin-bottom: 0.5rem;
         }
+
         .feature-card p {
             font-size: 1rem;
             color: #A3A3A3;
         }
+
         .cta {
             text-align: center;
             margin: 3rem 0;
         }
+
         .cta a {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -88,20 +114,25 @@
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
+
         .cta a.login {
             background: #3B82F6;
             color: #FFFFFF;
         }
+
         .cta a.login:hover {
             background: #2563EB;
         }
+
         .cta a.signup {
             background: #10B981;
             color: #FFFFFF;
         }
+
         .cta a.signup:hover {
             background: #059669;
         }
+
         footer {
             text-align: center;
             padding: 1rem 0;
@@ -111,6 +142,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Hero Section -->
     <div class="hero">
@@ -155,4 +187,5 @@
         &copy; {{ date('Y') }} FinWallet. Designed for Financial Freedom. All Rights Reserved.
     </footer>
 </body>
+
 </html>
