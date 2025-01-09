@@ -133,6 +133,22 @@ FinWallet is a secure, efficient, and user-friendly digital wallet application. 
    http://localhost:8000
    ```
 ---
+# Users of system (Seeds) 
+###  Important utility to run the system
+
+
+emails: 
+   
+   'admin@exemplo.com' (ADMIN)
+
+   'carlos@exemplo.com' (User)
+
+   'ana@exemplo.com' (User)
+
+   'maria@exemplo.com' (user)
+
+password for all: 'secret'
+---
 ## **Folder Structure**
 ```
 - app/
