@@ -29,6 +29,7 @@
                 align-items: center;
                 justify-content: center;
                 min-height: 100vh;
+                min-width: 100vw;
                 padding: 1rem;
                 background: linear-gradient(135deg, #1E293B, #0F172A);
             }
