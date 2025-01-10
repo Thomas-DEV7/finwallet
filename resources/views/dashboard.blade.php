@@ -55,8 +55,8 @@
                         <!-- Alterado para flex-col e adicionado espaço entre os botões -->
                         <!-- Botão de Transferir -->
                         <button onclick="openModal('transfer-modal')"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 m-3"
-                            style="background-color: #3a3a3a;">
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 m-3 dark:bg-green-800"
+                            style="">
                             Transferir
                         </button>
                         <!-- Botão de Depositar -->
@@ -93,13 +93,13 @@
                                     {{-- <pre>{{ json_encode($transaction, JSON_PRETTY_PRINT) }}</pre> --}}
 
                                     <tr
-                                        class="text-center {{ $transaction->amount < 0 ? 'bg-red-100' : 'bg-green-100' }}">
+                                        class="text-center {{ $transaction->amount < 0 ? '' : 'text-green-600 dark:text-green-400' }}">
                                         <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                             {{ ucfirst($transaction->type) }}
                                         </td>
                                         <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                             <span
-                                                class="{{ $transaction->amount < 0 ? 'text-black' : 'text-green-600 dark:text-green-400' }}">
+                                                class="{{ $transaction->amount < 0 ? '' : 'text-green-600 dark:text-green-400' }}">
                                                 R$ {{ number_format(abs($transaction->amount), 2, ',', '.') }}
                                             </span>
                                         </td>
@@ -139,7 +139,7 @@
             <div id="transfer-modal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
-                    <h2 class="text-xl font-semibold mb-4">Transferir Saldo</h2>
+                    <h2 class="text-xl font-semibold mb-4 dark:text-white">Transferir Saldo</h2>
                     <form id="transfer-form" method="POST" action="{{ route('wallet.transfer') }}">
                         @csrf
                         <input type="hidden" name="from_user_id" value="{{ auth()->user()->id }}">
@@ -182,7 +182,7 @@
             <div id="deposit-modal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
-                    <h2 class="text-xl font-semibold mb-4">Depositar Saldo</h2>
+                    <h2 class="text-xl font-semibold mb-4 dark:text-white ">Depositar Saldo</h2>
                     <form id="deposit-form" method="POST" action="{{ route('wallet.deposit') }}">
                         @csrf
                         <div class="mb-4">
@@ -210,7 +210,7 @@
             <div id="reversal-modal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
-                    <h2 class="text-xl font-semibold mb-4">Solicitar Reversão</h2>
+                    <h2 class="text-xl font-semibold mb-4 dark:text-white">Solicitar Reversão</h2>
                     <form id="reversal-form" method="POST" action="{{ route('transactions.reversal.request') }}">
                         @csrf
                         <input type="hidden" id="transaction_id" name="transaction_id">

@@ -1,5 +1,3 @@
-
-
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,6 +34,10 @@
                             {{ __('Solicitações') }}
                         </x-nav-link>
                     @endif
+                    <!-- "Sobre Nós" Link (Visible to All) -->
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
+                        {{ __('Sobre Nós') }}
+                    </x-nav-link>
                 </div>
             </div>
 
