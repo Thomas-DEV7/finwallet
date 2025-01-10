@@ -39,7 +39,7 @@
 
         input {
             background: #292c35;
-            color: #e5e5e5;
+            color: #000;
             border: 1px solid #3a3d47;
             border-radius: 0.375rem;
             padding: 0.75rem;
