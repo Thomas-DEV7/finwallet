@@ -27,7 +27,7 @@
                 <h3 class="text-lg font-semibold">Lista de Usuários</h3>
                 <table class="table-auto w-full mt-4 border-collapse border border-gray-200 dark:border-gray-700">
                     <thead>
-                        <tr class="bg-gray-100 dark:bg-gray-700">
+                        <tr class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Nome</th>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Email</th>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Role</th>
@@ -36,15 +36,19 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
-                            <tr class="text-center bg-white dark:bg-gray-800">
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{ $user->name }}
+                            <tr
+                                class="text-center bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <td class="border border-gray-300 dark:border-gray-600 dark:text-gray-200 px-4 py-2">
+                                    {{ $user->name }}
                                 </td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{ $user->email }}
+                                <td class="border border-gray-300 dark:border-gray-600 dark:text-gray-200 px-4 py-2">
+                                    {{ $user->email }}
                                 </td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                    {{ ucfirst($user->role) }}</td>
+                                <td class="border border-gray-300 dark:border-gray-600 dark:text-gray-200 px-4 py-2">
+                                    {{ ucfirst($user->role) }}
+                                </td>
                                 <td
-                                    class="border border-gray-300 dark:border-gray-600 px-4 py-2 flex justify-center gap-4">
+                                    class="border border-gray-300 dark:border-gray-600 dark:text-gray-200 px-4 py-2 flex justify-center gap-4">
                                     <!-- Botão de Editar -->
                                     <button onclick="openEditModal({{ $user }})"
                                         class="text-blue-500 hover:text-blue-600">
@@ -67,7 +71,7 @@
     <!-- Modal de Edição -->
     <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
-            <h2 class="text-xl font-semibold mb-4">Editar Usuário</h2>
+            <h2 class="text-xl font-semibold mb-4  dark:text-white">Editar Usuário</h2>
             <form id="edit-form" method="POST" action="{{ route('admin.users.update') }}">
                 @csrf
                 @method('PUT')
@@ -103,7 +107,7 @@
     <!-- Modal de Exclusão -->
     <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
-            <h2 class="text-xl font-semibold mb-4">Excluir Usuário</h2>
+            <h2 class="text-xl font-semibold mb-4  dark:text-white">Excluir Usuário</h2>
             <p class="text-sm mb-4">Tem certeza de que deseja excluir este usuário? Essa ação não pode ser desfeita.</p>
             <form id="delete-form" method="POST" action="{{ route('admin.users.delete') }}">
                 @csrf
