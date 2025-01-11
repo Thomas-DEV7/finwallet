@@ -34,7 +34,7 @@
                             {{ __('Solicitações') }}
                         </x-nav-link>
                     @endif
-                    <!-- "Sobre Nós" Link (Visible to All) -->
+
                     <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
                         {{ __('Sobre Nós') }}
                     </x-nav-link>
