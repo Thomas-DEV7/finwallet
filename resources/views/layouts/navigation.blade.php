@@ -119,7 +119,9 @@
                         {{ __('Dashboard') }}
                     </x-responsive-nav-link>
                 @endif
-
+                <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
+                    {{ __('Sobre nós') }}
+                </x-responsive-nav-link>
             </div>
 
             <!-- Responsive Settings Options -->
