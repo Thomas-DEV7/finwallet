@@ -54,14 +54,19 @@ class AdminController extends Controller
 
     public function reversalRequests()
     {
-        // Usando o modelo ReversalRequest com Eloquent
-        $reversalRequests = ReversalRequest::where('type', '!=', 'deposit')->with('user') // Carrega o relacionamento com o usuário
-            ->select('reversal_requests.*') // Seleciona os campos da tabela reversal_requests
+        // Filtrar reversals excluindo transações de tipo 'deposit', 'refund', e status não pendente
+        $reversalRequests = ReversalRequest::whereHas('transaction', function ($query) {
+                $query->whereNotIn('type', ['deposit', 'refund']); // Exclui tipos 'deposit' e 'refund'
+            })
+            ->where('status', 'pending') // Apenas solicitações pendentes
+            ->with('user', 'transaction') // Carrega os relacionamentos
             ->get();
-
+    
+        // info($reversalRequests->toArray()); // Log para depuração
+    
         return view('admin.reversal-requests', compact('reversalRequests'));
     }
-
+    
 
 
     // public function index()
