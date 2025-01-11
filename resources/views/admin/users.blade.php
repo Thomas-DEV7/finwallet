@@ -108,7 +108,7 @@
     <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 shadow-lg">
             <h2 class="text-xl font-semibold mb-4  dark:text-white">Excluir Usuário</h2>
-            <p class="text-sm mb-4">Tem certeza de que deseja excluir este usuário? Essa ação não pode ser desfeita.</p>
+            <p class="text-sm mb-4  dark:text-white">Tem certeza de que deseja excluir este usuário? Essa ação não pode ser desfeita.</p>
             <form id="delete-form" method="POST" action="{{ route('admin.users.delete') }}">
                 @csrf
                 @method('DELETE')
