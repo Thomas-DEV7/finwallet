@@ -24,7 +24,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6">
-                <h3 class="text-lg font-semibold">Lista de Usuários</h3>
+                <h3 class="text-lg font-semibold  dark:text-white">Lista de Usuários</h3>
                 <table class="table-auto w-full mt-4 border-collapse border border-gray-200 dark:border-gray-700">
                     <thead>
                         <tr class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
