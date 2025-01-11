@@ -27,8 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/wallet/transactions', function () {
         return view('wallet.transactions');
     })->name('wallet.transactions');
+    Route::get('/about', function () {
+        return view('about');
+    })->name('about')->middleware(['auth']);
 });
-
 
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
