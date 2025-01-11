@@ -122,12 +122,19 @@
                                             {{ $transaction->created_at->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                                            <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
-                                                class="text-red-500 hover:text-red-600 ml-2">
-                                                <i class="fas fa-warning" style="color: #d3d303"></i>
-                                            </button>
+                                            @if
+                                                <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
+                                                    class="text-red-500 hover:text-red-600 ml-2">
+                                                    <i class="fas fa-warning" style="color: #d3d303"></i>
+                                                </button>
+                                            @else
+                                                <button onclick="openModal('reversal-modal', {{ $transaction->id }})"
+                                                    class="text-red-500 hover:text-red-600 ml-2">
+                                                    <i class="fas fa-warning" style="color: #d3d303"></i>
+                                                </button>
+                                            @endif
                                         </td>
-                                    </tr>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>

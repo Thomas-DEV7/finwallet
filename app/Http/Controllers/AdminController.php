@@ -55,7 +55,7 @@ class AdminController extends Controller
     public function reversalRequests()
     {
         // Usando o modelo ReversalRequest com Eloquent
-        $reversalRequests = ReversalRequest::with('user') // Carrega o relacionamento com o usuário
+        $reversalRequests = ReversalRequest::where('type', '!=', 'deposit')->with('user') // Carrega o relacionamento com o usuário
             ->select('reversal_requests.*') // Seleciona os campos da tabela reversal_requests
             ->get();
 
