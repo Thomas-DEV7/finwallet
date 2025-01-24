@@ -1,29 +1,37 @@
-# Use official PHP image with Apache
+# Dockerfile
+
 FROM php:8.2-apache
 
-# Install dependencies
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
-    zip unzip curl git libpng-dev libjpeg-dev libfreetype6-dev libonig-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql gd
+    git \
+    zip \
+    unzip \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Instalar Composer
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Instalar Node.js e npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Configurar o diretório de trabalho
 WORKDIR /var/www/html
 
-# Copy project files
+# Copiar arquivos do projeto
 COPY . .
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Configurar permissões
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install project dependencies
-RUN composer install
+# Expor porta
+EXPOSE 8000
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port 80
-EXPOSE 80
+# Iniciar o Apache
+CMD ["apache2-foreground"]

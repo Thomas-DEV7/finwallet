@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - "8000:8000"
+      - "1234:8000"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
