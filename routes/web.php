@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
 Route::get('/dashboard', [WalletController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
